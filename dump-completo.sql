@@ -52,10 +52,14 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `actualizar_ronda_has_campeon` AFTER UPDATE ON `campeon` FOR EACH ROW BEGIN
-    UPDATE ronda_has_campeon
-    SET CAMPEON_idCAMPEON = NEW.idCAMPEON
-    WHERE CAMPEON_idCAMPEON = OLD.idCAMPEON;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `actualizar_ronda_has_campeon` AFTER UPDATE ON `campeon` FOR EACH ROW BEGIN
+
+    UPDATE ronda_has_campeon
+
+    SET CAMPEON_idCAMPEON = NEW.idCAMPEON
+
+    WHERE CAMPEON_idCAMPEON = OLD.idCAMPEON;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -184,18 +188,30 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `sumar_puntos_equipo_ganador` AFTER INSERT ON `partido` FOR EACH ROW BEGIN
-    DECLARE equipo_ganador_id INT;
-
-    IF NEW.equipo_ganador_color = 'rojo' THEN
-        SET equipo_ganador_id = NEW.EQUIPO_idEQUIPO_rojo;
-    ELSE
-        SET equipo_ganador_id = NEW.EQUIPO_idEQUIPO_azul;
-    END IF;
-
-    UPDATE ranking
-    SET puntos_totales = puntos_totales + 3
-    WHERE EQUIPO_idEQUIPO = equipo_ganador_id;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `sumar_puntos_equipo_ganador` AFTER INSERT ON `partido` FOR EACH ROW BEGIN
+
+    DECLARE equipo_ganador_id INT;
+
+
+
+    IF NEW.equipo_ganador_color = 'rojo' THEN
+
+        SET equipo_ganador_id = NEW.EQUIPO_idEQUIPO_rojo;
+
+    ELSE
+
+        SET equipo_ganador_id = NEW.EQUIPO_idEQUIPO_azul;
+
+    END IF;
+
+
+
+    UPDATE ranking
+
+    SET puntos_totales = puntos_totales + 3
+
+    WHERE EQUIPO_idEQUIPO = equipo_ganador_id;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -211,9 +227,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `actualizar_resumen_partidos` AFTER INSERT ON `partido` FOR EACH ROW BEGIN
-    UPDATE resumen_partidos
-    SET total_partidos = total_partidos + 1;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `actualizar_resumen_partidos` AFTER INSERT ON `partido` FOR EACH ROW BEGIN
+
+    UPDATE resumen_partidos
+
+    SET total_partidos = total_partidos + 1;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -229,9 +248,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `actualizar_resumen_partidos_eliminar` AFTER DELETE ON `partido` FOR EACH ROW BEGIN
-    UPDATE resumen_partidos
-    SET total_partidos = total_partidos - 1;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `actualizar_resumen_partidos_eliminar` AFTER DELETE ON `partido` FOR EACH ROW BEGIN
+
+    UPDATE resumen_partidos
+
+    SET total_partidos = total_partidos - 1;
+
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -392,15 +414,24 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `contar_pick_campeon`(campeon_id INT) RETURNS int
     DETERMINISTIC
-BEGIN
-    DECLARE pick_count INT;
-
-    SELECT COUNT(*)
-    INTO pick_count
-    FROM ronda_has_campeon
-    WHERE CAMPEON_idCAMPEON = campeon_id AND tipo = 'pick';
-
-    RETURN pick_count;
+BEGIN
+
+    DECLARE pick_count INT;
+
+
+
+    SELECT COUNT(*)
+
+    INTO pick_count
+
+    FROM ronda_has_campeon
+
+    WHERE CAMPEON_idCAMPEON = campeon_id AND tipo = 'pick';
+
+
+
+    RETURN pick_count;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -419,16 +450,26 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` FUNCTION `obtener_numero_rondas_por_partido`(partido_id INT) RETURNS int
     DETERMINISTIC
-BEGIN
-    DECLARE numero_rondas INT;
-
-    -- Obtener el número de rondas para el partido dado
-    SELECT COUNT(*) INTO numero_rondas
-    FROM ronda
-    WHERE PARTIDO_idPARTIDO = partido_id;
-
-    -- Retornar el número de rondas
-    RETURN numero_rondas;
+BEGIN
+
+    DECLARE numero_rondas INT;
+
+
+
+    -- Obtener el número de rondas para el partido dado
+
+    SELECT COUNT(*) INTO numero_rondas
+
+    FROM ronda
+
+    WHERE PARTIDO_idPARTIDO = partido_id;
+
+
+
+    -- Retornar el número de rondas
+
+    RETURN numero_rondas;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -446,28 +487,50 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizar_posiciones`()
-BEGIN 
-    DECLARE done INT DEFAULT 0; 
-    DECLARE equipo_id INT; 
-    DECLARE torneo_ano INT; 
-    DECLARE cur CURSOR FOR 
-        SELECT EQUIPO_idEQUIPO, TORNEO_ano 
-        FROM ranking 
-        ORDER BY puntos_totales DESC; 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
-    SET @posicion = 0; 
-    OPEN cur; 
-    leer_equipos: LOOP 
-        FETCH cur INTO equipo_id, torneo_ano; 
-        IF done THEN 
-            LEAVE leer_equipos; 
-        END IF; 
-        SET @posicion = @posicion + 1; 
-        UPDATE ranking 
-        SET posicion = @posicion 
-        WHERE EQUIPO_idEQUIPO = equipo_id AND TORNEO_ano = torneo_ano; 
-    END LOOP; 
-    CLOSE cur; 
+BEGIN 
+
+    DECLARE done INT DEFAULT 0; 
+
+    DECLARE equipo_id INT; 
+
+    DECLARE torneo_ano INT; 
+
+    DECLARE cur CURSOR FOR 
+
+        SELECT EQUIPO_idEQUIPO, TORNEO_ano 
+
+        FROM ranking 
+
+        ORDER BY puntos_totales DESC; 
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1; 
+
+    SET @posicion = 0; 
+
+    OPEN cur; 
+
+    leer_equipos: LOOP 
+
+        FETCH cur INTO equipo_id, torneo_ano; 
+
+        IF done THEN 
+
+            LEAVE leer_equipos; 
+
+        END IF; 
+
+        SET @posicion = @posicion + 1; 
+
+        UPDATE ranking 
+
+        SET posicion = @posicion 
+
+        WHERE EQUIPO_idEQUIPO = equipo_id AND TORNEO_ano = torneo_ano; 
+
+    END LOOP; 
+
+    CLOSE cur; 
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -485,13 +548,20 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mostrar_partidos_ganadores`()
-BEGIN
-    SELECT r.numero_ronda, e.nombre AS equipo_ganador, e_contra.nombre AS equipo_perdedor
-    FROM ronda r
-    JOIN equipo e ON r.EQUIPO_idEQUIPO_ganador = e.idEQUIPO
-    JOIN partido p ON r.PARTIDO_idPARTIDO = p.idPARTIDO
-    JOIN equipo e_contra ON (p.EQUIPO_idEQUIPO_local = e_contra.idEQUIPO OR p.EQUIPO_idEQUIPO_visitante = e_contra.idEQUIPO)
-    WHERE r.EQUIPO_idEQUIPO_ganador IS NOT NULL;
+BEGIN
+
+    SELECT r.numero_ronda, e.nombre AS equipo_ganador, e_contra.nombre AS equipo_perdedor
+
+    FROM ronda r
+
+    JOIN equipo e ON r.EQUIPO_idEQUIPO_ganador = e.idEQUIPO
+
+    JOIN partido p ON r.PARTIDO_idPARTIDO = p.idPARTIDO
+
+    JOIN equipo e_contra ON (p.EQUIPO_idEQUIPO_local = e_contra.idEQUIPO OR p.EQUIPO_idEQUIPO_visitante = e_contra.idEQUIPO)
+
+    WHERE r.EQUIPO_idEQUIPO_ganador IS NOT NULL;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -509,51 +579,96 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mostrar_partidos_ganadores_perdedores`()
-BEGIN
-    DECLARE done INT DEFAULT 0;
-    DECLARE partido_id INT;
-    DECLARE equipo_ganador VARCHAR(255);
-    DECLARE equipo_perdedor VARCHAR(255);
-    DECLARE resultados VARCHAR(5000) DEFAULT '';
-
-    -- Declarar cursor para obtener los detalles de los partidos
-    DECLARE cur CURSOR FOR
-        SELECT p.idPARTIDO,
-               CASE p.equipo_ganador_color
-                   WHEN 'rojo' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_rojo)
-                   WHEN 'azul' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_azul)
-               END AS equipo_ganador,
-               CASE p.equipo_ganador_color
-                   WHEN 'rojo' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_azul)
-                   WHEN 'azul' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_rojo)
-               END AS equipo_perdedor
-        FROM partido p;
-
-    -- Manejador para cursor
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
-    -- Abrir cursor
-    OPEN cur;
-
-    -- Iniciar bucle de lectura
-    read_loop: LOOP
-        -- Leer registro del cursor
-        FETCH cur INTO partido_id, equipo_ganador, equipo_perdedor;
-        
-        -- Si no hay más registros, salir del bucle
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
-
-        -- Concatenar los detalles del partido al resultado
-        SET resultados = CONCAT(resultados, 'ID Partido: ', partido_id, '\tEquipo Ganador: ', equipo_ganador, '\tEquipo Perdedor:', equipo_perdedor, '\n');
-    END LOOP;
-
-    -- Cerrar cursor
-    CLOSE cur;
-
-    -- Mostrar todos los resultados en una sola pestaña
-    SELECT resultados;
+BEGIN
+
+    DECLARE done INT DEFAULT 0;
+
+    DECLARE partido_id INT;
+
+    DECLARE equipo_ganador VARCHAR(255);
+
+    DECLARE equipo_perdedor VARCHAR(255);
+
+    DECLARE resultados VARCHAR(5000) DEFAULT '';
+
+
+
+    -- Declarar cursor para obtener los detalles de los partidos
+
+    DECLARE cur CURSOR FOR
+
+        SELECT p.idPARTIDO,
+
+               CASE p.equipo_ganador_color
+
+                   WHEN 'rojo' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_rojo)
+
+                   WHEN 'azul' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_azul)
+
+               END AS equipo_ganador,
+
+               CASE p.equipo_ganador_color
+
+                   WHEN 'rojo' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_azul)
+
+                   WHEN 'azul' THEN (SELECT nombre FROM equipo WHERE idEQUIPO = p.EQUIPO_idEQUIPO_rojo)
+
+               END AS equipo_perdedor
+
+        FROM partido p;
+
+
+
+    -- Manejador para cursor
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+
+
+    -- Abrir cursor
+
+    OPEN cur;
+
+
+
+    -- Iniciar bucle de lectura
+
+    read_loop: LOOP
+
+        -- Leer registro del cursor
+
+        FETCH cur INTO partido_id, equipo_ganador, equipo_perdedor;
+
+        
+
+        -- Si no hay más registros, salir del bucle
+
+        IF done THEN
+
+            LEAVE read_loop;
+
+        END IF;
+
+
+
+        -- Concatenar los detalles del partido al resultado
+
+        SET resultados = CONCAT(resultados, 'ID Partido: ', partido_id, '\tEquipo Ganador: ', equipo_ganador, '\tEquipo Perdedor:', equipo_perdedor, '\n');
+
+    END LOOP;
+
+
+
+    -- Cerrar cursor
+
+    CLOSE cur;
+
+
+
+    -- Mostrar todos los resultados en una sola pestaña
+
+    SELECT resultados;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -571,15 +686,24 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `obtener_top_1_equipos_por_ano`()
-BEGIN
-    SELECT e.nombre
-    FROM ranking r
-    JOIN equipo e ON r.EQUIPO_idEQUIPO = e.idEQUIPO
-    WHERE (r.TORNEO_ano, r.posicion) IN (
-        SELECT TORNEO_ano, MIN(posicion)
-        FROM ranking
-        GROUP BY TORNEO_ano
-    );
+BEGIN
+
+    SELECT e.nombre
+
+    FROM ranking r
+
+    JOIN equipo e ON r.EQUIPO_idEQUIPO = e.idEQUIPO
+
+    WHERE (r.TORNEO_ano, r.posicion) IN (
+
+        SELECT TORNEO_ano, MIN(posicion)
+
+        FROM ranking
+
+        GROUP BY TORNEO_ano
+
+    );
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
